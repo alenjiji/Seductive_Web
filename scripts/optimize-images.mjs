@@ -40,7 +40,6 @@ const crops = [
     out: "home/hero-2in1.webp",
     maxWidth: 1200,
   },
-  { src: "diode-yag/1-02.jpg", region: [0.518, 0.105, 0.477, 0.313], out: "home/treatment.webp", maxWidth: 1400 },
   { src: "diode-yag/1-02.jpg", region: [0.536, 0.496, 0.423, 0.183], out: "home/diode-heads.webp", maxWidth: 1200 },
   {
     src: "diode-yag/1-08.jpg",
