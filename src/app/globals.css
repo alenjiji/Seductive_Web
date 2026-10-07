@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-brand: #e31e3f;
+  --color-brand-dark: #c41a35;
+  --color-brand-light: #ff4d6d;
+  --color-brand-tint: #fef5f7;
+  --color-ink: #111827;
+  --color-muted: #4b5563;
+  --color-surface: #f9fafb;
+  --color-line: #f3f4f6;
+  --color-divider: #e5e7eb;
+  --color-night: #0a0a0f;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --shadow-card: 0 2px 8px rgb(0 0 0 / 0.06);
+  --shadow-card-hover: 0 12px 32px rgb(227 30 63 / 0.15);
+  --shadow-brand: 0 4px 12px rgb(227 30 63 / 0.3);
+  --shadow-brand-hover: 0 8px 20px rgb(227 30 63 / 0.4);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-pulse-dot: pulse-dot 2s infinite;
+  --animate-fade: fade-in 0.8s ease both;
+  --animate-slide-up: slide-up 0.8s ease both;
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
   }
 }
 
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
+}
+
+:root {
+  /* Height of the fixed navbar once it has condensed on scroll. */
+  --nav-h: 70px;
+}
+@media (min-width: 768px) {
+  :root {
+    --nav-h: 82px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #fff;
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
