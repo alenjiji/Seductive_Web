@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { sendInquiry, type FieldName, type InquiryState } from "@/app/(site)/contact/actions";
 import { getProduct, productTitle } from "@/lib/catalog";
-import { inquiryWhatsappLink, interestForCategory, interestOptions } from "@/lib/contact";
-import { whatsappLink } from "@/lib/site";
+import { inquiryWhatsappMessage, interestForCategory, interestOptions } from "@/lib/contact";
+import { ContactChooser } from "@/components/ui/ContactChooser";
 import type { Product } from "@/data/products";
 import { AlertIcon, ArrowRightIcon, CheckIcon, CloseIcon, WhatsAppIcon } from "@/components/ui/icons";
 
@@ -193,16 +193,15 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
             </>
           )}
         </button>
-        <a
-          href={whatsappLink("Hi Seductive, I'd like to ask about your equipment.")}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => {
+        <ContactChooser
+          channel="whatsapp"
+          message="Hi Seductive, I'd like to ask about your equipment."
+          getMessage={() => {
             // Carry over whatever has been typed, in the legacy message format.
-            if (!formRef.current) return;
+            if (!formRef.current) return "Hi Seductive, I'd like to ask about your equipment.";
             const data = new FormData(formRef.current);
             const get = (key: string) => String(data.get(key) ?? "").trim();
-            e.currentTarget.href = inquiryWhatsappLink({
+            return inquiryWhatsappMessage({
               name: get("name"),
               email: get("email"),
               phone: get("phone"),
@@ -215,7 +214,7 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
         >
           <WhatsAppIcon size={18} />
           Chat on WhatsApp instead
-        </a>
+        </ContactChooser>
       </div>
       <p aria-live="polite" className="sr-only">
         {pending ? "Sending your message" : ""}

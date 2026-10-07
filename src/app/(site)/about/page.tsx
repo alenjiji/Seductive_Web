@@ -12,9 +12,11 @@ import {
   ShieldIcon,
   WrenchIcon,
 } from "@/components/ui/icons";
+import { CountUp } from "@/components/ui/CountUp";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SplitWords } from "@/components/ui/SplitWords";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -25,11 +27,17 @@ export const metadata: Metadata = {
   openGraph: { url: "/about" },
 };
 
+// Claims are strings like "16+"; split them so the number can count up.
+const claim = (value: string | number) => {
+  const [, num = "0", suffix = ""] = String(value).match(/^(\d+)(.*)$/) ?? [];
+  return { to: Number(num), suffix };
+};
+
 const stats = [
-  { icon: BadgeIcon, value: site.claims.years, label: "Years of Experience" },
-  { icon: GlobeIcon, value: site.claims.countries, label: "Countries Served" },
-  { icon: LayersIcon, value: String(site.claims.series), label: "Product Series" },
-  { icon: ShieldIcon, value: site.claims.models, label: "Product Models" },
+  { icon: BadgeIcon, ...claim(site.claims.years), label: "Years of Experience" },
+  { icon: GlobeIcon, ...claim(site.claims.countries), label: "Countries Served" },
+  { icon: LayersIcon, ...claim(site.claims.series), label: "Product Series" },
+  { icon: ShieldIcon, ...claim(site.claims.models), label: "Product Models" },
 ];
 
 // The legacy page's third photo was a hotlinked stock image; the testing bench replaces it.
@@ -82,7 +90,7 @@ const team = [
 ];
 
 const cardClass =
-  "h-full rounded-2xl border-2 border-line bg-white p-7 shadow-[0_4px_16px_rgb(0_0_0/0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_40px_rgb(227_30_63/0.12)] md:p-8";
+  "group relative h-full rounded-2xl border-2 border-line bg-white p-7 shadow-[0_4px_16px_rgb(0_0_0/0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_40px_rgb(227_30_63/0.12)] md:p-8";
 
 export default function AboutPage() {
   return (
@@ -100,20 +108,22 @@ export default function AboutPage() {
       {/* Overview */}
       <section aria-labelledby="overview" className="bg-white px-6 pb-20 pt-8 md:px-10 md:pb-28 xl:px-[60px]">
         <div className="mx-auto grid max-w-[1400px] items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
-          <Reveal>
+          <Reveal variant="none">
             <h2
               id="overview"
               className="mb-7 font-display text-[32px] font-bold leading-[1.2] tracking-[-1px] text-ink md:text-[44px]"
             >
-              Leading the Industry for Over <span className="block text-brand">16 Years</span>
+              <SplitWords>
+                Leading the Industry for Over <span className="block text-brand">16 Years</span>
+              </SplitWords>
             </h2>
-            <p className="mb-5 text-base leading-[1.8] text-muted md:text-[17px]">
+            <p className="rise-late mb-5 text-base leading-[1.8] text-muted md:text-[17px]">
               With over 16 years of continuous development and innovation, our products have earned an
               outstanding reputation in both domestic and international markets. We are committed to
               developing and manufacturing premium medical and beauty equipment, combining cutting-edge
               technology with unwavering dedication to excellence.
             </p>
-            <p className="mb-8 text-base leading-[1.8] text-muted md:text-[17px]">
+            <p className="rise-late mb-8 text-base leading-[1.8] text-muted md:text-[17px]">
               Our comprehensive product portfolio spans 14 specialized series, including CO2 laser systems,
               diode laser hair removal machines, 1064nm long pulse ND YAG lasers, picosecond laser
               technology, dental lasers, Q-Switch ND YAG lasers, spider vein removal lasers, multifunctional
@@ -122,19 +132,20 @@ export default function AboutPage() {
             </p>
             <Link
               href="/products"
-              className="group inline-flex items-center gap-2 text-[15px] font-semibold text-brand hover:text-brand-dark"
+              className="rise-late group inline-flex items-center gap-2 text-[15px] font-semibold text-brand hover:text-brand-dark"
             >
               Explore our product range
               <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
             </Link>
           </Reveal>
 
-          <Reveal>
-            <dl className="grid grid-cols-2 gap-4 md:gap-5">
-              {stats.map(({ icon: Icon, value, label }, i) => (
+          <Reveal variant="none">
+            <dl className="stagger grid grid-cols-2 gap-4 md:gap-5">
+              {stats.map(({ icon: Icon, to, suffix, label }, i) => (
                 <div
                   key={label}
-                  className={`flex flex-col-reverse rounded-2xl p-6 md:p-8 ${
+                  style={{ "--i": i } as React.CSSProperties}
+                  className={`flex flex-col-reverse rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1 md:p-8 ${
                     i === 0 ? "bg-gradient-to-br from-brand to-brand-dark text-white" : "bg-surface ring-1 ring-line"
                   }`}
                 >
@@ -142,7 +153,8 @@ export default function AboutPage() {
                   <dd>
                     <Icon size={24} className={`mb-5 ${i === 0 ? "text-white/90" : "text-brand"}`} />
                     <span className={`block font-display text-4xl font-bold md:text-5xl ${i === 0 ? "" : "text-brand"}`}>
-                      {value}
+                      <CountUp to={to} />
+                      {suffix}
                     </span>
                   </dd>
                 </div>
@@ -155,26 +167,25 @@ export default function AboutPage() {
       {/* Facility */}
       <section aria-labelledby="facility" className="bg-surface px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
         <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <SectionHeader
-              id="facility"
-              label="Our Facility"
-              title={
-                <>
-                  Modernized <span className="text-brand">Factory</span>
-                </>
-              }
-              subtitle="State-of-the-art manufacturing facility with stringent quality control measures"
-              className="mb-14 md:mb-16"
-            />
-          </Reveal>
+          <SectionHeader
+            id="facility"
+            label="Our Facility"
+            title={
+              <>
+                Modernized <span className="text-brand">Factory</span>
+              </>
+            }
+            subtitle="State-of-the-art manufacturing facility with stringent quality control measures"
+            className="mb-14 md:mb-16"
+          />
 
           <ul className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 md:mb-16">
             {photos.map((photo, i) => (
               <Reveal
                 as="li"
+                variant="clip"
                 key={photo.src}
-                delay={i * 120}
+                delay={i * 150}
                 className={i === 0 ? "sm:col-span-2 lg:col-span-1" : ""}
               >
                 <figure className="group relative overflow-hidden rounded-3xl shadow-[0_20px_40px_rgb(0_0_0/0.1)]">
@@ -184,12 +195,12 @@ export default function AboutPage() {
                     width={photo.width}
                     height={photo.height}
                     sizes="(min-width: 1024px) 440px, (min-width: 640px) 50vw, 100vw"
-                    className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                    className={`settle w-full object-cover ${
                       i === 0 ? "aspect-[4/3] sm:aspect-[16/10] lg:aspect-[3/4]" : "aspect-[4/3] sm:aspect-[3/4]"
                     }`}
                   />
                   <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
-                  <figcaption className="absolute inset-x-4 bottom-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-ink shadow-lg">
+                  <figcaption className="absolute inset-x-4 bottom-4 inline-flex w-fit transition-transform duration-500 group-hover:-translate-y-1 items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-ink shadow-lg">
                     <span className="size-2 rounded-full bg-brand" aria-hidden="true" />
                     {photo.label}
                   </figcaption>
@@ -198,51 +209,49 @@ export default function AboutPage() {
             ))}
           </ul>
 
-          <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <Reveal as="ul" variant="none" className="stagger grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {facility.map(({ icon: Icon, title, text }, i) => (
-              <Reveal as="li" key={title} delay={i * 100}>
-                <div className={cardClass}>
-                  <span className="mb-6 flex size-14 items-center justify-center rounded-xl bg-brand-tint text-brand">
+              <li key={title} style={{ "--i": i } as React.CSSProperties}>
+                <div data-glow className={cardClass}>
+                  <span className="mb-6 flex size-14 items-center justify-center rounded-xl bg-brand-tint text-brand transition-all duration-500 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
                     <Icon size={24} />
                   </span>
                   <h3 className="mb-3 font-display text-xl font-bold leading-snug text-ink">{title}</h3>
                   <p className="text-[15px] leading-relaxed text-muted">{text}</p>
                 </div>
-              </Reveal>
+              </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </section>
 
       {/* People */}
       <section aria-labelledby="people" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
         <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <SectionHeader
-              id="people"
-              label="Our People"
-              title={
-                <>
-                  Expert Sales <span className="text-brand">Team</span>
-                </>
-              }
-              subtitle="Professional team members trained with comprehensive knowledge to provide exceptional service"
-              className="mb-14 md:mb-16"
-            />
-          </Reveal>
-          <ul className="grid gap-5 md:grid-cols-3">
+          <SectionHeader
+            id="people"
+            label="Our People"
+            title={
+              <>
+                Expert Sales <span className="text-brand">Team</span>
+              </>
+            }
+            subtitle="Professional team members trained with comprehensive knowledge to provide exceptional service"
+            className="mb-14 md:mb-16"
+          />
+          <Reveal as="ul" variant="none" className="stagger grid gap-5 md:grid-cols-3">
             {team.map(({ icon: Icon, title, text }, i) => (
-              <Reveal as="li" key={title} delay={i * 120}>
-                <div className={`${cardClass} text-center`}>
-                  <span className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-brand">
+              <li key={title} style={{ "--i": i } as React.CSSProperties}>
+                <div data-glow className={`${cardClass} text-center`}>
+                  <span className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-brand transition-transform duration-500 group-hover:-translate-y-1 group-hover:rotate-6">
                     <Icon size={26} />
                   </span>
                   <h3 className="mb-3 font-display text-[22px] font-bold leading-snug text-ink">{title}</h3>
                   <p className="text-[15px] leading-relaxed text-muted">{text}</p>
                 </div>
-              </Reveal>
+              </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </section>
 

@@ -25,34 +25,42 @@ export function Process() {
   return (
     <section aria-labelledby="process" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
       <div className="mx-auto max-w-[1400px]">
-        <Reveal>
-          <SectionHeader
-            id="process"
-            label="How It Works"
-            title={
-              <>
-                From First Hello to <span className="text-brand">First Treatment</span>
-              </>
-            }
-            subtitle="Buying professional equipment should feel simple. Here's what to expect when you reach out."
-            className="mb-14 md:mb-20"
-          />
-        </Reveal>
-        <ol className="relative grid gap-10 md:grid-cols-2 xl:grid-cols-4 xl:gap-8">
+        <SectionHeader
+          id="process"
+          label="How It Works"
+          title={
+            <>
+              From First Hello to <span className="text-brand">First Treatment</span>
+            </>
+          }
+          subtitle="Buying professional equipment should feel simple. Here's what to expect when you reach out."
+          className="mb-14 md:mb-20"
+        />
+        <Reveal as="ol" variant="none" className="relative grid gap-10 md:grid-cols-2 xl:grid-cols-4 xl:gap-8">
+          {/* Connector that draws across as the section scrolls in (desktop only). */}
           <span
             aria-hidden="true"
-            className="absolute left-0 right-0 top-7 hidden h-0.5 bg-gradient-to-r from-brand/0 via-brand/30 to-brand/0 xl:block"
+            className="draw-x absolute left-7 right-0 top-7 hidden h-0.5 bg-gradient-to-r from-brand via-brand/40 to-brand/0 xl:block"
           />
           {steps.map((step, i) => (
-            <Reveal as="li" key={step.title} delay={i * 120} className="relative">
-                <span className="relative mb-6 flex size-14 items-center justify-center rounded-full bg-brand font-display text-xl font-bold text-white shadow-brand ring-8 ring-white">
-                  {i + 1}
-                </span>
-                <h3 className="mb-3 font-display text-[22px] font-bold leading-snug text-ink">{step.title}</h3>
-                <p className="text-[15px] leading-relaxed text-muted">{step.text}</p>
-            </Reveal>
+            <li key={step.title} className="group relative" style={{ "--i": i } as React.CSSProperties}>
+              <span className="pop relative mb-6 flex size-14 items-center justify-center rounded-full bg-brand font-display text-xl font-bold text-white shadow-brand ring-8 ring-white transition-transform duration-300 group-hover:scale-110">
+                {i + 1}
+              </span>
+              <div className="stagger">
+                <h3
+                  style={{ "--i": i + 1 } as React.CSSProperties}
+                  className="mb-3 font-display text-[22px] font-bold leading-snug text-ink"
+                >
+                  {step.title}
+                </h3>
+                <p style={{ "--i": i + 1.5 } as React.CSSProperties} className="text-[15px] leading-relaxed text-muted">
+                  {step.text}
+                </p>
+              </div>
+            </li>
           ))}
-        </ol>
+        </Reveal>
       </div>
     </section>
   );

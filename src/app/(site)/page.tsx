@@ -7,6 +7,7 @@ import { Hero } from "@/components/home/Hero";
 import { NewArrivals } from "@/components/home/NewArrivals";
 import { Process } from "@/components/home/Process";
 import { SeriesGrid } from "@/components/home/SeriesGrid";
+import { TrustMarquee } from "@/components/home/TrustMarquee";
 import { Welcome } from "@/components/home/Welcome";
 import { site } from "@/lib/site";
 
@@ -24,7 +25,12 @@ const organizationJsonLd = {
   url: site.url,
   logo: new URL("/images/site/logo.webp", site.url).toString(),
   email: site.email,
-  telephone: site.phone.href.replace("tel:", ""),
+  contactPoint: site.lines.map((line) => ({
+    "@type": "ContactPoint",
+    telephone: `+${line.number}`,
+    contactType: "sales",
+    areaServed: line.id === "uae" ? "AE" : "IN",
+  })),
   foundingDate: String(site.claims.since),
   address: {
     "@type": "PostalAddress",
@@ -42,6 +48,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, "\u003c") }}
       />
       <Hero />
+      <TrustMarquee />
       <Welcome />
       <NewArrivals />
       <SeriesGrid />

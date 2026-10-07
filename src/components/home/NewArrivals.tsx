@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/Reveal";
+import { SplitWords } from "@/components/ui/SplitWords";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 type Spotlight = {
@@ -98,41 +99,40 @@ export function NewArrivals() {
   return (
     <section aria-labelledby="new-arrivals" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
       <div className="mx-auto max-w-[1400px]">
-        <Reveal>
-          <SectionHeader
-            id="new-arrivals"
-            label="Just Arrived"
-            title={
-              <>
-                Meet Our Newest <span className="text-brand">Systems</span>
-              </>
-            }
-            subtitle="Three new platforms for clinics ready to offer more, each with full training and support."
-            className="mb-16 md:mb-20"
-          />
-        </Reveal>
+        <SectionHeader
+          id="new-arrivals"
+          label="Just Arrived"
+          title={
+            <>
+              Meet Our Newest <span className="text-brand">Systems</span>
+            </>
+          }
+          subtitle="Three new platforms for clinics ready to offer more, each with full training and support."
+          className="mb-16 md:mb-20"
+        />
 
         <div className="space-y-20 md:space-y-28">
           {spotlights.map((item, i) => (
-            <Reveal key={item.slug}>
+            <Reveal key={item.slug} variant="none">
               <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
                 <div className={i % 2 === 1 ? "lg:order-last" : ""}>
-                  <div
-                    className={`relative aspect-[5/4] overflow-hidden rounded-3xl bg-gradient-to-br ring-1 ring-black/[.04] ${item.tone}`}
+                  <Reveal
+                    variant="clip"
+                    className={`group relative aspect-[5/4] overflow-hidden rounded-3xl bg-gradient-to-br ring-1 ring-black/[.04] ${item.tone}`}
                   >
                     <Image
                       src={item.image.src}
                       alt={item.image.alt}
                       fill
                       sizes="(min-width: 1024px) 640px, 100vw"
-                      className="object-contain p-8 mix-blend-multiply md:p-12"
+                      className="settle object-contain p-8 mix-blend-multiply md:p-12"
                     />
                     <span className="absolute left-5 top-5 rounded bg-ink px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.5px] text-white">
                       New
                     </span>
-                  </div>
+                  </Reveal>
                   {item.detail && (
-                    <figure className="mt-4 flex items-center gap-4 rounded-2xl bg-surface p-3 pr-5 ring-1 ring-line">
+                    <figure className="rise-late mt-4 flex items-center gap-4 rounded-2xl bg-surface p-3 pr-5 ring-1 ring-line">
                       <Image
                         src={item.detail.src}
                         alt={item.detail.alt}
@@ -147,24 +147,34 @@ export function NewArrivals() {
                 </div>
 
                 <div>
-                  <p className="mb-3 text-xs font-bold uppercase tracking-[1px] text-brand">{item.eyebrow}</p>
+                  <p className="pop mb-3 inline-block text-xs font-bold uppercase tracking-[1px] text-brand">
+                    {item.eyebrow}
+                  </p>
                   <h3 className="mb-5 font-display text-3xl font-bold leading-tight tracking-[-0.5px] text-ink md:text-[40px]">
-                    {item.name}
+                    <SplitWords>{item.name}</SplitWords>
                   </h3>
-                  <p className="mb-8 text-base leading-[1.8] text-muted md:text-[17px]">{item.lead}</p>
+                  <p className="rise-late mb-8 text-base leading-[1.8] text-muted md:text-[17px]">{item.lead}</p>
 
-                  <dl className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-divider ring-1 ring-divider sm:grid-cols-4">
-                    {item.stats.map(([value, label]) => (
-                      <div key={label} className="flex flex-col-reverse bg-white px-4 py-4">
+                  <dl className="stagger mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-divider ring-1 ring-divider sm:grid-cols-4">
+                    {item.stats.map(([value, label], n) => (
+                      <div
+                        key={label}
+                        style={{ "--i": n + 3 } as React.CSSProperties}
+                        className="flex flex-col-reverse bg-white px-4 py-4"
+                      >
                         <dt className="mt-1 text-[11px] font-semibold uppercase tracking-[0.5px] text-muted">{label}</dt>
                         <dd className="font-display text-xl font-bold text-brand md:text-2xl">{value}</dd>
                       </div>
                     ))}
                   </dl>
 
-                  <ul className="mb-10 space-y-3">
-                    {item.points.map((point) => (
-                      <li key={point} className="flex items-start gap-3 text-[15px] leading-relaxed text-muted">
+                  <ul className="stagger mb-10 space-y-3">
+                    {item.points.map((point, n) => (
+                      <li
+                        key={point}
+                        style={{ "--i": n + 6 } as React.CSSProperties}
+                        className="flex items-start gap-3 text-[15px] leading-relaxed text-muted"
+                      >
                         <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                           <CheckIcon size={11} />
                         </span>
@@ -173,7 +183,7 @@ export function NewArrivals() {
                     ))}
                   </ul>
 
-                  <div className="flex flex-col gap-3 sm:flex-row">
+                  <div className="rise-late flex flex-col gap-3 sm:flex-row">
                     <Link
                       href={`/contact?product=${item.slug}#inquiry`}
                       className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-brand px-7 py-4 text-[15px] font-semibold text-white shadow-brand transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-brand-hover"

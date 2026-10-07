@@ -1,5 +1,4 @@
 import type { ProductCategory } from "@/data/products";
-import { whatsappLink } from "@/lib/site";
 
 /** "Product Interest" options, in the order the legacy form listed them. */
 export const interestOptions = [
@@ -54,8 +53,7 @@ export type InquiryFields = {
 };
 
 /** Same prefilled message format the legacy site sent to WhatsApp. */
-export function inquiryWhatsappLink(fields: InquiryFields) {
+export function inquiryWhatsappMessage(fields: InquiryFields) {
   const interest = fields.product ?? interestLabel(fields.interest);
-  const text = `*New Inquiry*\n\n*Name:* ${fields.name}\n*Email:* ${fields.email}\n*Phone:* ${fields.phone}\n*Product Interest:* ${interest}\n\n*Message:*\n${fields.message}`;
-  return whatsappLink(text);
+  return `*New Inquiry*\n\n*Name:* ${fields.name}\n*Email:* ${fields.email}\n*Phone:* ${fields.phone}\n*Product Interest:* ${interest}\n\n*Message:*\n${fields.message}`;
 }

@@ -27,7 +27,7 @@ export default function ProductsPage() {
         }
         subtitle="After 16 years of development, our products have won a good reputation both in domestic and overseas markets"
       >
-        <ul className="mt-8 flex animate-slide-up flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-muted [animation-delay:.4s]">
+        <ul className="mt-8 flex animate-rise-in flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium [--rise-delay:.6s] text-muted">
           {trust.map((item) => (
             <li key={item} className="flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />

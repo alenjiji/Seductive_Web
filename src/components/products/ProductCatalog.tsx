@@ -219,8 +219,11 @@ export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewP
 function ProductGrid({ items, headingLevel }: { items: Product[]; headingLevel?: "h2" | "h3" }) {
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
-      {items.map((product) => (
-        <ProductCard key={product.slug} product={product} headingLevel={headingLevel} />
+      {items.map((product, i) => (
+        // Cards that appear after a filter change animate in; ones already shown stay put.
+        <div key={product.slug} className="card-in flex" style={{ "--i": i } as React.CSSProperties}>
+          <ProductCard product={product} headingLevel={headingLevel} />
+        </div>
       ))}
     </div>
   );

@@ -13,13 +13,15 @@ import {
   PhoneIcon,
   WhatsAppIcon,
 } from "@/components/ui/icons";
+import { ContactChooser } from "@/components/ui/ContactChooser";
+import { SplitWords } from "@/components/ui/SplitWords";
 import { faqs } from "@/data/faq";
-import { site, whatsappLink } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Talk to Seductive about medical aesthetic and dental equipment: call +971 52 524 8785, email admin@seductive.ae or message us on WhatsApp. Replies within 24 hours.",
+    "Talk to Seductive about medical aesthetic and dental equipment: call or WhatsApp our UAE (+971 52 524 8785) or India (+91 965 639 8483) lines, or email admin@seductive.ae. Replies within 24 hours.",
   alternates: { canonical: "/contact" },
   openGraph: { url: "/contact" },
 };
@@ -30,35 +32,38 @@ const stats = [
   { icon: ClockIcon, value: "<24h", label: "Response" },
 ];
 
+const lineValues = site.lines.map((line) => `${line.region} · ${line.display}`);
+
+// Phone and WhatsApp open the UAE/India chooser; email links straight through.
 const methods = [
   {
     icon: PhoneIcon,
     label: "Phone",
-    value: site.phone.display,
-    href: site.phone.href,
+    values: lineValues,
+    channel: "call",
     description: "Call us directly for immediate assistance",
     tone: "bg-brand/10 text-brand",
-    external: false,
   },
   {
     icon: MailIcon,
     label: "Email",
-    value: site.email,
+    values: [site.email],
     href: `mailto:${site.email}`,
     description: "Send us your detailed inquiries",
     tone: "bg-blue-500/10 text-blue-600",
-    external: false,
   },
   {
     icon: WhatsAppIcon,
     label: "WhatsApp",
-    value: site.whatsapp.display,
-    href: `https://wa.me/${site.whatsapp.number}`,
+    values: lineValues,
+    channel: "whatsapp",
     description: "Chat with us for quick responses",
     tone: "bg-[#25d366]/10 text-[#128c4a]",
-    external: true,
   },
-];
+] as const;
+
+const methodClass =
+  "group relative flex items-start gap-4 overflow-hidden rounded-[20px] border-2 border-line bg-white p-5 shadow-[0_8px_24px_rgb(0_0_0/0.06)] transition-all duration-300 before:absolute before:inset-y-0 before:left-0 before:w-1 before:origin-top before:scale-y-0 before:bg-brand before:transition-transform hover:translate-x-2 hover:border-brand hover:shadow-[0_16px_48px_rgb(227_30_63/0.15)] hover:before:scale-y-100 sm:gap-5 md:p-8";
 
 const reasons = [
   "16+ Years Experience",
@@ -105,20 +110,28 @@ export default function ContactPage() {
 
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-12 xl:grid-cols-2 xl:gap-20">
           <div>
-            <p className="mb-8 inline-flex animate-fade items-center gap-2 rounded-full border-2 border-line bg-white px-5 py-2.5 text-[13px] font-semibold text-ink shadow-[0_4px_12px_rgb(0_0_0/0.05)]">
+            <p className="mb-8 inline-flex animate-pop-in items-center gap-2 rounded-full border-2 border-line bg-white px-5 py-2.5 text-[13px] font-semibold text-ink shadow-[0_4px_12px_rgb(0_0_0/0.05)]">
               <span className="size-2 animate-pulse-dot rounded-full bg-brand" />
               Let&apos;s Talk
             </p>
-            <h1 className="mb-6 animate-slide-up font-display text-[32px] font-bold leading-[1.15] tracking-[-1px] text-ink sm:text-4xl md:mb-7 md:text-5xl xl:text-[64px]">
-              Start Your Journey to <span className="text-brand">Success</span>
+            <h1
+              style={{ "--split-delay": "0.1s" } as React.CSSProperties}
+              className="split-load mb-6 font-display text-[32px] font-bold leading-[1.15] tracking-[-1px] text-ink sm:text-4xl md:mb-7 md:text-5xl xl:text-[64px]"
+            >
+              <SplitWords>
+                Start Your Journey to <span className="text-brand">Success</span>
+              </SplitWords>
             </h1>
-            <p className="mb-10 max-w-[540px] animate-slide-up text-base leading-[1.8] text-muted [animation-delay:.2s] md:text-lg">
+            <p className="mb-10 max-w-[540px] animate-rise-in text-base leading-[1.8] text-muted [--rise-delay:.45s] md:text-lg">
               Connect with our experts today and discover how our advanced medical beauty equipment
               can transform your business and elevate your services to new heights.
             </p>
-            <dl className="flex animate-fade justify-between gap-3 [animation-delay:.4s] sm:justify-start sm:gap-8">
-              {stats.map(({ icon: Icon, value, label }) => (
-                <div key={label} className="flex flex-1 flex-col items-center gap-2 text-center sm:flex-none sm:flex-row sm:gap-3 sm:text-left">
+            <dl className="flex justify-between gap-3 sm:justify-start sm:gap-8">
+              {stats.map(({ icon: Icon, value, label }, i) => (
+                <div
+                  key={label}
+                  style={{ "--i": i } as React.CSSProperties}
+                  className="flex flex-1 animate-rise-in flex-col [--rise-delay:.6s] items-center gap-2 text-center sm:flex-none sm:flex-row sm:gap-3 sm:text-left">
                   <span className="flex size-10 items-center justify-center rounded-xl bg-brand/10 text-brand sm:size-12">
                     <Icon size={22} />
                   </span>
@@ -131,27 +144,42 @@ export default function ContactPage() {
             </dl>
           </div>
 
-          <ul className="flex animate-fade flex-col gap-4 [animation-delay:.4s] md:gap-5">
-            {methods.map(({ icon: Icon, label, value, href, description, tone, external }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-                  className="group relative flex items-start gap-4 overflow-hidden rounded-[20px] border-2 border-line bg-white p-5 shadow-[0_8px_24px_rgb(0_0_0/0.06)] transition-all duration-300 before:absolute before:inset-y-0 before:left-0 before:w-1 before:origin-top before:scale-y-0 before:bg-brand before:transition-transform hover:translate-x-2 hover:border-brand hover:shadow-[0_16px_48px_rgb(227_30_63/0.15)] hover:before:scale-y-100 sm:gap-5 md:p-8"
-                >
+          <ul className="flex flex-col gap-4 md:gap-5">
+            {methods.map((method, i) => {
+              const { icon: Icon, label, values, description, tone } = method;
+              const body = (
+                <>
                   <span className={`flex size-12 shrink-0 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110 sm:size-14 md:size-[72px] ${tone}`}>
                     <Icon size={26} />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="mb-1.5 block text-xs font-bold uppercase tracking-[1px] text-muted">{label}</span>
-                    <span className="mb-1.5 block break-words text-base font-bold text-ink transition-colors group-hover:text-brand md:text-xl">
-                      {value}
-                    </span>
-                    <span className="block text-[13px] leading-normal text-muted md:text-sm">{description}</span>
+                    {values.map((value) => (
+                      <span
+                        key={value}
+                        className="mb-1 block break-words text-base font-bold text-ink transition-colors group-hover:text-brand md:text-lg"
+                      >
+                        {value}
+                      </span>
+                    ))}
+                    <span className="mt-1.5 block text-[13px] leading-normal text-muted md:text-sm">{description}</span>
                   </span>
-                </a>
-              </li>
-            ))}
+                </>
+              );
+              return (
+                <li key={label} style={{ "--i": i } as React.CSSProperties} className="animate-rise-in [--rise-delay:.35s]">
+                  {"channel" in method ? (
+                    <ContactChooser channel={method.channel} className={methodClass}>
+                      {body}
+                    </ContactChooser>
+                  ) : (
+                    <a href={method.href} className={methodClass}>
+                      {body}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </section>
@@ -252,14 +280,13 @@ export default function ContactPage() {
           <Faq items={faqs} />
           <p className="mt-10 text-center text-muted">
             Still have a question?{" "}
-            <a
-              href={whatsappLink("Hi Seductive, I have a question about your equipment.")}
-              target="_blank"
-              rel="noopener noreferrer"
+            <ContactChooser
+              channel="whatsapp"
+              message="Hi Seductive, I have a question about your equipment."
               className="font-semibold text-brand hover:underline"
             >
               Ask us on WhatsApp
-            </a>
+            </ContactChooser>
           </p>
         </div>
       </section>

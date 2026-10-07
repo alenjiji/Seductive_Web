@@ -5,9 +5,12 @@ export const site = {
     "Medical aesthetics and dental equipment manufacturer trusted since 2009: 40+ models across laser, HIFU, body sculpting, facial and dental ranges, shipped to 5+ countries.",
   // TODO(owner): confirm the production domain.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://seductive.ae",
-  phone: { display: "+971 52 524 8785", href: "tel:+971525248785" },
   email: "admin@seductive.ae",
-  whatsapp: { display: "+91 965 639 8483", number: "919656398483" },
+  /** Both lines take calls and WhatsApp; visitors pick one before we dial or open a chat. */
+  lines: [
+    { id: "uae", region: "UAE", display: "+971 52 524 8785", number: "971525248785" },
+    { id: "india", region: "India", display: "+91 965 639 8483", number: "919656398483" },
+  ],
   address:
     "Office No.57, 4th Floor, UNIGROVE Business Center, Al Gaizi Plaza, Al Garhoud, Dubai – UAE",
   addressLines: [
@@ -31,6 +34,11 @@ export const site = {
   },
 } as const;
 
-export function whatsappLink(message: string) {
-  return `https://wa.me/${site.whatsapp.number}?text=${encodeURIComponent(message)}`;
+export type ContactLine = (typeof site.lines)[number];
+
+export const telHref = (line: ContactLine) => `tel:+${line.number}`;
+
+/** Defaults to the India line, which was the site's original WhatsApp number. */
+export function whatsappLink(message: string, line: ContactLine = site.lines[1]) {
+  return `https://wa.me/${line.number}?text=${encodeURIComponent(message)}`;
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site, whatsappLink } from "@/lib/site";
+import { ContactChooser } from "@/components/ui/ContactChooser";
 import { ArrowRightIcon, WhatsAppIcon } from "@/components/ui/icons";
 
 type Props = {
@@ -33,21 +33,20 @@ export function InquiryBand({
             Request Full Catalog
             <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
           </Link>
-          <a
-            href={whatsappLink(whatsappMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <ContactChooser
+            channel="whatsapp"
+            message={whatsappMessage}
             className="inline-flex items-center justify-center gap-2.5 rounded-lg border-2 border-white/40 px-8 py-3.5 text-[15px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
           >
             <WhatsAppIcon />
             Chat on WhatsApp
-          </a>
+          </ContactChooser>
         </div>
         <p className="mt-6 text-sm text-white/70">
-          Or call{" "}
-          <a href={site.phone.href} className="font-semibold text-white underline-offset-4 hover:underline">
-            {site.phone.display}
-          </a>
+          Or{" "}
+          <ContactChooser channel="call" className="font-semibold text-white underline-offset-4 hover:underline">
+            call us in the UAE or India
+          </ContactChooser>
         </p>
       </div>
     </section>

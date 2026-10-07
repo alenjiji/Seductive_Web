@@ -12,7 +12,7 @@ export function ProductCard({ product, headingLevel: Heading = "h3" }: Props) {
   const href = `/products/${product.slug}`;
 
   return (
-    <article className="group relative flex w-full flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/[.04] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover">
+    <article data-glow className="group relative flex w-full flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/[.04] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover">
       <div className="relative aspect-[10/9] border-b border-line bg-[radial-gradient(circle_at_50%_45%,#fff_0%,#fff_45%,#f4f4f6_100%)]">
         <Image
           src={product.image}

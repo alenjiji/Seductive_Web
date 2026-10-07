@@ -22,7 +22,7 @@ export function FeaturedProducts() {
   return (
     <section aria-labelledby="featured" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
       <div className="mx-auto max-w-[1400px]">
-        <Reveal>
+        <Reveal variant="fade">
           <div className="mb-14 flex flex-col items-start justify-between gap-6 md:mb-16 lg:flex-row lg:items-end">
             <SectionHeader
               id="featured"
@@ -44,13 +44,15 @@ export function FeaturedProducts() {
             </Link>
           </div>
         </Reveal>
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
-          {products.map((product, i) => (
-            <Reveal key={product.slug} delay={(i % 3) * 120} className="flex">
-              <ProductCard product={product} />
-            </Reveal>
-          ))}
-        </div>
+        <Reveal variant="none">
+          <div className="stagger grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
+            {products.map((product, i) => (
+              <div key={product.slug} className="flex" style={{ "--i": i } as React.CSSProperties}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

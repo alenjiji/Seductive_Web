@@ -32,7 +32,9 @@ import {
   relatedProducts,
   specLabel,
 } from "@/lib/catalog";
-import { site, whatsappLink } from "@/lib/site";
+import { ContactChooser } from "@/components/ui/ContactChooser";
+import { SplitWords } from "@/components/ui/SplitWords";
+import { site } from "@/lib/site";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -125,7 +127,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
   const related = relatedProducts(product, 3);
   const { previous, next } = adjacentProducts(product);
   const quoteHref = `/contact?product=${product.slug}#inquiry`;
-  const waHref = whatsappLink(inquiryMessage(product));
+  const waMessage = inquiryMessage(product);
   const specs: [string, string][] = [
     [specLabel(product.spec), product.spec],
     ["Category", product.category],
@@ -197,7 +199,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20">
             {/* Media */}
             <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)] lg:self-start">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl sm:aspect-square bg-[radial-gradient(circle_at_50%_40%,#fff_0%,#fff_40%,#f1f1f4_100%)] ring-1 ring-black/[.05]">
+              <div className="group relative aspect-[4/3] animate-wipe-up overflow-hidden rounded-3xl sm:aspect-square bg-[radial-gradient(circle_at_50%_40%,#fff_0%,#fff_40%,#f1f1f4_100%)] ring-1 ring-black/[.05]">
                 <div
                   aria-hidden="true"
                   className="absolute -bottom-1/4 -right-1/4 size-3/4 rounded-full bg-[radial-gradient(circle,rgb(227_30_63/0.10)_0%,transparent_70%)]"
@@ -208,7 +210,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                   fill
                   preload
                   sizes="(min-width: 1400px) 680px, (min-width: 1024px) 50vw, 100vw"
-                  className="animate-fade object-contain p-10 mix-blend-multiply md:p-16"
+                  className="animate-settle object-contain p-10 mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03] md:p-16"
                 />
                 <span className="absolute left-5 top-5 rounded bg-brand px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.5px] text-white">
                   {product.category}
@@ -232,8 +234,11 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                   </span>
                 )}
               </p>
-              <h1 className="mb-6 animate-slide-up font-display text-4xl font-bold leading-[1.15] tracking-[-1px] text-ink md:text-5xl xl:text-[56px]">
-                {product.name}
+              <h1
+                style={{ "--split-delay": "0.2s" } as React.CSSProperties}
+                className="split-load mb-6 font-display text-4xl font-bold leading-[1.15] tracking-[-1px] text-ink md:text-5xl xl:text-[56px]"
+              >
+                <SplitWords>{product.name}</SplitWords>
               </h1>
 
               <div className="mb-8 rounded-2xl border border-brand/15 bg-brand-tint px-5 py-4">
@@ -245,8 +250,11 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
               <h2 className="mb-4 text-sm font-bold uppercase tracking-[1px] text-ink">Key features</h2>
               <ul className="mb-10 space-y-3">
-                {product.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-base leading-relaxed text-muted md:text-[17px]">
+                {product.features.map((feature, i) => (
+                  <li
+                    key={feature}
+                    style={{ "--i": i, "--rise-delay": "0.55s" } as React.CSSProperties}
+                    className="flex animate-rise-in items-start gap-3 text-base leading-relaxed text-muted md:text-[17px]">
                     <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                       <CheckIcon size={13} />
                     </span>
@@ -263,22 +271,21 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                   Request a Quote
                   <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
                 </Link>
-                <a
-                  href={waHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <ContactChooser
+                  channel="whatsapp"
+                  message={waMessage}
                   className="inline-flex flex-1 items-center justify-center gap-2.5 rounded-lg border-2 border-ink/15 px-8 py-3.5 text-[15px] font-semibold text-ink transition-colors hover:border-[#25d366] hover:text-[#128c4a]"
                 >
                   <WhatsAppIcon />
                   Ask on WhatsApp
-                </a>
+                </ContactChooser>
               </div>
               <p className="mt-4 flex flex-wrap items-center gap-x-2 text-sm text-muted">
                 <PhoneIcon size={15} className="text-brand" />
                 Prefer to talk?
-                <a href={site.phone.href} className="font-semibold text-ink hover:text-brand">
-                  {site.phone.display}
-                </a>
+                <ContactChooser channel="call" className="font-semibold text-ink hover:text-brand">
+                  Call us in the UAE or India
+                </ContactChooser>
                 <span aria-hidden="true">·</span> Replies within 24 hours
               </p>
               <TrustTiles className="mt-8 sm:grid-cols-4 lg:hidden" />
@@ -372,15 +379,14 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
         >
           Request a Quote
         </Link>
-        <a
-          href={waHref}
-          target="_blank"
-          rel="noopener noreferrer"
+        <ContactChooser
+          channel="whatsapp"
+          message={waMessage}
           aria-label="Ask about this product on WhatsApp"
           className="flex w-14 items-center justify-center rounded-lg border-2 border-divider text-[#128c4a]"
         >
           <WhatsAppIcon size={22} />
-        </a>
+        </ContactChooser>
       </div>
     </>
   );
