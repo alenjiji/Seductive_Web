@@ -1,5 +1,9 @@
 import { products, type Product, type ProductCategory } from "@/data/products";
 
+// Slugs back the /products/[slug] routes, so fail the build on a duplicate.
+const duplicate = products.find((p, i) => products.findIndex((q) => q.slug === p.slug) !== i);
+if (duplicate) throw new Error(`Duplicate product slug "${duplicate.slug}"`);
+
 export type Family = {
   slug: string;
   label: string;
@@ -25,6 +29,8 @@ export const families: Family[] = [
     label: "Body & Skin",
     categories: [
       "HIFU Machine",
+      "RF Microneedling",
+      "Cold Plasma",
       "EMS Machine",
       "Slimming Machine",
       "LED Machine",
@@ -96,7 +102,7 @@ export const productTitle = (product: Product) =>
   product.model ? `${product.name} (${product.model})` : product.name;
 
 export function productDescription(product: Product) {
-  return `${productTitle(product)}: ${product.category.toLowerCase()} equipment, ${product.spec}. ${product.features.join(". ")}. ISO certified and CE approved.`;
+  return `${productTitle(product)}: ${product.category} equipment, ${product.spec}. ${product.features.join(". ")}. ISO certified and CE approved.`;
 }
 
 export type CatalogFilter =

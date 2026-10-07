@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -41,3 +42,8 @@ yarn-error.log*
 next-env.d.ts
 
 REBUILD.md
+# netlify
+.netlify
+
+# brochure/price-list sources: local input for scripts/optimize-images.mjs, not for the public repo
+/assets/source/

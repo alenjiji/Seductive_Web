@@ -1,4 +1,5 @@
-// Seeded from docs/products.source.json. Order matches the legacy catalog.
+// Seeded from docs/products.source.json (legacy catalog order), plus the new systems from the
+// brochures in assets/source (marked `isNew`).
 
 export const productCategories = [
   "Diode Laser",
@@ -7,6 +8,8 @@ export const productCategories = [
   "Q Switch Laser",
   "CO2 Laser",
   "HIFU Machine",
+  "RF Microneedling",
+  "Cold Plasma",
   "EMS Machine",
   "Slimming Machine",
   "IPL Machine",
@@ -31,9 +34,39 @@ export type Product = {
   image: string;
   alt: string;
   features: [string, string, string];
+  /** New arrival, highlighted on the home page and product cards. */
+  isNew?: boolean;
 };
 
 export const products: Product[] = [
+  {
+    slug: "2-in-1-diode-nd-yag-laser",
+    name: "2-in-1 Diode + Nd:YAG Laser",
+    category: "Diode Laser",
+    spec: "Diode 755/808/940/1064nm + Nd:YAG 532/755/1064/1320nm",
+    image: "/images/products/diode-yag-2in1.webp",
+    alt: "2-in-1 diode laser and Q-switched Nd:YAG laser platform",
+    features: [
+      "Hair removal plus tattoo & pigment removal",
+      "US Coherent laser, spot size up to 20×40mm",
+      "3000W platform, 15.6-inch touch screen",
+    ],
+    isNew: true,
+  },
+  {
+    slug: "4-wavelength-diode-laser-hair-removal",
+    name: "4-Wavelength Diode Laser Hair Removal",
+    category: "Diode Laser",
+    spec: "755nm / 808nm / 940nm / 1064nm",
+    image: "/images/products/diode-portable.webp",
+    alt: "Compact four-wavelength diode laser hair removal machine",
+    features: [
+      "10 laser bars from USA Coherent",
+      "Laser generator rated up to 50 million shots",
+      "13.3-inch touch screen with preset & pro modes",
+    ],
+    isNew: true,
+  },
   {
     slug: "808nm-diode-laser-gld01",
     model: "GLD01",
@@ -183,6 +216,34 @@ export const products: Product[] = [
       "Scar removal treatment",
       "Variable treatment graphics",
     ],
+  },
+  {
+    slug: "emrf-m8-rf-microneedling",
+    name: "EMRF M8 RF Microneedling",
+    category: "RF Microneedling",
+    spec: "4MHz RF · 0.5–7mm depth",
+    image: "/images/products/emrf-m8.webp",
+    alt: "EMRF M8 radio-frequency microneedling machine with treatment probes",
+    features: [
+      "Two handles: EMRF tightening + M8 microneedling",
+      "Insulated, gold-plated microneedles",
+      "10.4-inch touch screen, 10–300W output",
+    ],
+    isNew: true,
+  },
+  {
+    slug: "fusion-cold-plasma-machine",
+    name: "Fusion Cold Plasma Machine",
+    category: "Cold Plasma",
+    spec: "Cold + hot plasma · 8 probe types",
+    image: "/images/products/fusion-cold-plasma.webp",
+    alt: "Fusion cold plasma beauty machine with touch screen",
+    features: [
+      "Anti-inflammatory, anti-aging, freckle removal",
+      "Targets acne scarring, pigmentation and pores",
+      "15-inch touch screen, 10–200W output",
+    ],
+    isNew: true,
   },
   {
     slug: "7d-hifu-machine",

@@ -20,6 +20,8 @@
   --animate-pulse-dot: pulse-dot 2s infinite;
   --animate-fade: fade-in 0.8s ease both;
   --animate-slide-up: slide-up 0.8s ease both;
+  --animate-blob: blob 20s ease-in-out infinite;
+  --animate-float: float 3s ease-in-out infinite;
 
   @keyframes pulse-dot {
     0%,
@@ -30,6 +32,27 @@
     50% {
       transform: scale(1.2);
       opacity: 0.8;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  @keyframes blob {
+    0%,
+    100% {
+      transform: translate(0) scale(1);
+    }
+    33% {
+      transform: translate(50px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-30px, 30px) scale(0.9);
     }
   }
   @keyframes fade-in {
@@ -67,6 +90,21 @@ html {
 body {
   background: #fff;
   color: var(--color-ink);
+}
+
+.reveal {
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(48px);
+}
+
+/* Playfair defaults to old-style figures, which make model codes like GL068 read as "GLo68". */
+.font-display {
+  font-variant-numeric: lining-nums;
 }
 
 :focus-visible {
