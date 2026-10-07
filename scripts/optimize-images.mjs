@@ -28,6 +28,10 @@ const jobs = [
     trim: true,
   })),
   { src: "lo.png", out: "site/logo.webp", maxWidth: 400, trim: false },
+  // About page: factory, production floor and testing bench.
+  { src: "fac.png", out: "site/about-factory.webp", maxWidth: 900, trim: false },
+  { src: "prod.png", out: "site/about-production.webp", maxWidth: 900, trim: false },
+  { src: "emp.png", out: "site/about-testing.webp", maxWidth: 900, trim: false },
 ];
 
 // Regions are fractions of the page: [left, top, width, height].
