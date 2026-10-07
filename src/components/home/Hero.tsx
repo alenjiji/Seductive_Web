@@ -4,7 +4,7 @@ import { CountUp } from "@/components/ui/CountUp";
 import { ArrowRightIcon, BadgeIcon, HeadsetIcon, ShieldIcon } from "@/components/ui/icons";
 
 const stats = [
-  { value: 60, label: "Countries" },
+  { value: 5, label: "Countries" },
   { value: 16, label: "Years" },
   { value: 40, label: "Models" },
   { value: 14, label: "Series" },
@@ -36,7 +36,7 @@ export function Hero() {
           </h1>
           <p className="mb-10 max-w-[540px] animate-slide-up text-base leading-[1.8] text-muted [animation-delay:.2s] md:text-lg">
             Experience the pinnacle of medical aesthetics technology with our comprehensive range of 40+
-            advanced devices, transforming beauty standards across 60+ countries.
+            advanced devices, transforming beauty standards across 5+ countries.
           </p>
           <div className="mb-12 flex animate-slide-up flex-col gap-3 [animation-delay:.4s] sm:flex-row sm:gap-4 lg:mb-14">
             <Link

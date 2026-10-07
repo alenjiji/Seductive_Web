@@ -35,7 +35,7 @@ export function Welcome() {
             Let&apos;s find the <span className="text-brand">right machine</span> for your clinic
           </h2>
           <p className="mb-5 max-w-[600px] text-base leading-[1.8] text-muted md:text-lg">
-            Since 2009, clinic owners, dermatologists and beauty professionals in more than 60 countries
+            Since 2009, clinic owners, dermatologists and beauty professionals in 5+ countries
             have trusted us with the equipment behind their treatments.
           </p>
           <p className="mb-10 max-w-[600px] text-base leading-[1.8] text-muted md:text-lg">

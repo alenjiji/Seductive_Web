@@ -20,7 +20,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Seductive has developed and manufactured medical and beauty equipment for 16+ years: a 7,000 m² self-owned facility, 50+ professionals, a 10-engineer R&D team and customers in 60+ countries.",
+    "Seductive has developed and manufactured medical and beauty equipment for 16+ years: a 7,000 m² self-owned facility, 50+ professionals, a 10-engineer R&D team and customers in 5+ countries.",
   alternates: { canonical: "/about" },
   openGraph: { url: "/about" },
 };

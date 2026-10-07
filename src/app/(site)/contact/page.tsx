@@ -62,7 +62,7 @@ const methods = [
 
 const reasons = [
   "16+ Years Experience",
-  "60+ Countries Served",
+  `${site.claims.countries} Countries Served`,
   "ISO & CE Certified",
   "24/7 Technical Support",
   "Free Consultation",
